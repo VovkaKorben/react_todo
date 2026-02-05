@@ -26,10 +26,21 @@ const TaskColumn = ({ header, tasks, state, handleCreate, handleDelete, handleUp
                 closestSep = sep;
             }
         });
-        if (closestSep.classList.contains('active')) return;
+
+
+        // 2. ПРЕДОХРАНИТЕЛЬ: Если ближайшая уже активна — ВЫХОДИМ.
+        // Пока ты возишь мышкой внутри "зоны" одной полоски, код ниже не выполнится.
+        if (closestSep && closestSep.classList.contains('active')) return;
+
+        // 3. Только если цель РЕАЛЬНО сменилась — обновляем всех
         seps.forEach(sep => {
             sep.classList.toggle('active', sep === closestSep);
         });
+
+        /* if (closestSep.classList.contains('active')) return;
+         seps.forEach(sep => {
+             sep.classList.toggle('active', sep === closestSep);
+         });*/
     }
     const handleDragLeave = (e) => {
         const seps = e.currentTarget.querySelectorAll('.sep');
