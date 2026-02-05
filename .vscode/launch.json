@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/back",
+      "console": "internalConsole",
+      "preLaunchTask": "clearConsole",
+      "internalConsoleOptions": "openOnSessionStart"
+
+    },
+    {
+      "name": "Frontend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}/front",
+      "console": "internalConsole",
+      "preLaunchTask": "clearConsole",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Browser Start",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/front/src",
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "❤ ALL",
+      "configurations": [
+        "Backend",
+        "Frontend",
+        "Browser Start"
+      ],
+      "stopAll": true
+    }
+  ]
+}

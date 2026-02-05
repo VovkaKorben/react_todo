@@ -1,0 +1,76 @@
+#root {
+  --font-name: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-size: 16px;
+  --corner-radius: 8px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-name);
+  font-size: var(--font-size);
+}
+
+body {
+
+  background-color: #d1dfdb;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: baseline;
+  align-content: stretch;
+
+  gap: 5px;
+}
+
+
+/* --------------------------------------------- */
+input,
+button,
+textarea {
+  font-family: var(--font-name);
+  font-size: var(--font-size);
+  outline: none;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+/* --------------------------------------------- */
+
+.c0 {
+  background-color: rgb(195, 195, 195);
+
+}
+
+.c1 {
+  background-color: rgb(233, 233, 233);
+
+}
+
+.curp {
+  cursor: pointer;
+}
+
+
+.sep {
+  height: 2px;
+  background-color: var(--column-bg);
+  /* background-color: red; */
+}
+
+.sep.active {
+
+  /* background-color: var(--column-bg); */
+  background-color: rgb(255, 0, 0);
+}
+
+#drag-ghost-svg {
+  /* position: absolute;  left: -9999px; */
+}

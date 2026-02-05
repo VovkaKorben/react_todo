@@ -1,0 +1,112 @@
+.task-card {
+    min-height: 150px;
+    position: relative;
+
+    --header-size: 26px;
+    --deadline-size: 33px;
+    --footer-size: 22px;
+    --card-bg-color: rgb(221, 221, 221);
+
+    border-radius: var(--corner-radius);
+    font-size: 12px;
+    overflow: hidden;
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); */
+}
+
+.task-card>div {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.card-header {
+    top: 0px;
+    height: var(--header-size);
+    background-color: rgb(111, 0, 255);
+    color: whitesmoke;
+    /* padding: 0 10px; */
+}
+
+
+
+.card-body {
+    top: var(--header-size);
+    bottom: calc(var(--footer-size) + var(--deadline-size));
+    /* border: 1px solid red; */
+    overflow-y: auto;
+    padding: 5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.card-deadline {
+    bottom: var(--footer-size);
+    height: var(--deadline-size);
+    /* border: 1px solid rgb(34, 0, 255); */
+}
+
+.card-footer {
+    /* background-color: rgb(221, 221, 221); */
+    bottom: 0px;
+    height: var(--footer-size);
+}
+
+.card-delete {
+    /* position: absolute; */
+    background-color: var(--card-bg-color);
+    right: 7px;
+    border-radius: 50%;
+
+
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Стиль */
+    background: #f1f2f6;
+    color: #a4b0be;
+    border: none;
+    /* border-radius: 50%; */
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+
+    /* Плавность */
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.task-card:hover .card-delete {
+    opacity: 1;
+}
+
+.card-delete:hover {
+    background: #ff4757;
+    /* Красный при наведении */
+    color: white;
+    transform: rotate(90deg);
+    /* Эффектный поворот */
+}
+
+.task-card textarea {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    resize: none;
+    border: none;
+    /* background: transparent; */
+
+    font-family: inherit;
+    /* Чтобы шрифт не отличался от карточки */
+    font-size: inherit;
+    padding: 0;
+    /* Чтобы текст прилипал к краям body */
+    margin: 0;
+    display: block;
+}
