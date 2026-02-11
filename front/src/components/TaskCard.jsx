@@ -1,13 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/css/TaskCard.css'
-import { prettify } from '../helpers/debug.js';
 import { API_URL } from '../helpers/utils.js';
 
-const TaskCard = ({ task, handleDelete, handleUpdate }) => {
+const TaskCard = ({ headerColor, task, handleDelete, handleUpdate }) => {
 
     const [editing, setEditing] = useState(false);
     const [text, setText] = useState(task.message);
 
+    const [dateEditing, setDateEditing] = useState(false);
+    const [dateValue, setDateValue] = useState(task.deadline ? new Date(task.deadline).toISOString().slice(0, 16) : '');
+    useEffect(() => {
+        if (task.deadline) {
+            setDateValue(new Date(task.deadline).toISOString().slice(0, 16));
+        }
+    }, [task.deadline]);
     const saveChanges = async () => {
         // Если текст не изменился, ничего не делаем
         if (text === task.message) {
@@ -31,7 +37,28 @@ const TaskCard = ({ task, handleDelete, handleUpdate }) => {
             console.error("Ошибка при сохранении:", e);
         }
     };
+    const saveDate = async () => {
+        const currentIso = task.deadline ? new Date(task.deadline).toISOString().slice(0, 16) : '';
+        if (dateValue === currentIso) {
+            setDateEditing(false);
+            return;
+        }
 
+        try {
+            const resp = await fetch(`${API_URL}tasks/${task.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ deadline: new Date(dateValue).toISOString() })
+            });
+
+            if (resp.ok) {
+                handleUpdate(await resp.json());
+                setDateEditing(false);
+            }
+        } catch (e) {
+            console.error("Ошибка обновления даты:", e);
+        }
+    };
 
     const handleDragStart = (e) => {
         const svgIcon = document.getElementById('drag-ghost-svg');
@@ -47,12 +74,15 @@ const TaskCard = ({ task, handleDelete, handleUpdate }) => {
 
 
     return (<div
-        className='task-card c1'
+        className={`task-card c1`}
         draggable={true}
         onDragStart={handleDragStart}
 
-    >
-        <div className='card-header frlc'>Task
+    >{headerColor}
+        <div 
+        className='frlc card-header'
+        style={{ backgroundColor: headerColor }}
+        >Task
             <div className='card-delete'
                 onClick={() => handleDelete(task.id)}
             >
@@ -88,8 +118,28 @@ const TaskCard = ({ task, handleDelete, handleUpdate }) => {
 
 
 
-        <div className='card-deadline frcc'>Deadline: {new Date(task.deadline).toLocaleString('ru-RU')}</div >
-        <div className='card-footer frcc'>footer</div >
+        {/* <div className='card-deadline frcc'>Deadline: {new Date(task.deadline).toLocaleString('ru-RU')}</div > */}
+
+        <div className='card-deadline frcc' onClick={() => !dateEditing && setDateEditing(true)}>
+            {dateEditing ? (
+                <input
+                    type="datetime-local"
+                    autoFocus
+                    className="date-input"
+                    value={dateValue}
+                    onChange={(e) => setDateValue(e.target.value)}
+                    onBlur={saveDate}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') saveDate();
+                    }}
+                />
+            ) : (
+                <>Deadline: {new Date(task.deadline).toLocaleString('ru-RU')}</>
+            )}
+        </div>
+
+
+        <div className='card-footer frcc'>Author: Volodymyr</div >
         {/* {JSON.stringify(task)} */}
     </div >
     )

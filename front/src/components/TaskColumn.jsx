@@ -3,7 +3,7 @@ import TaskCard from './TaskCard.jsx'
 import '../assets/css/TaskColumn.css'
 import '../assets/css/flex.css'
 
-const TaskColumn = ({ header, tasks, state, handleCreate, handleDelete, handleUpdate }) => {
+const TaskColumn = ({ header, tasks, state, handleCreate, handleDelete, handleUpdate, handleTaskMove }) => {
 
     const showTasks = [...tasks].filter(t => t.state === state);
 
@@ -47,18 +47,37 @@ const TaskColumn = ({ header, tasks, state, handleCreate, handleDelete, handleUp
         seps.forEach(sep => sep.classList.remove('active'));
     };
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const taskId = e.dataTransfer.getData("taskId"); // Получаем ID из TaskCard.jsx
+        const activeSep = e.currentTarget.querySelector('.sep.active');
+
+        if (activeSep) {
+            const newOrder = parseInt(activeSep.dataset.order);
+            handleTaskMove(taskId, state, newOrder);
+        }
+
+        // Снимаем подсветку со всех сепараторов
+        const seps = e.currentTarget.querySelectorAll('.sep');
+        seps.forEach(sep => sep.classList.remove('active'));
+    };
+
     return (
 
         <div
             className='task-column'
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
         >
 
             {/* column caption */}
-            <div className='header frcc c0'>
-                {header.toUpperCase()}
-                {showTasks.length > 0 && ` (${showTasks.length})`}
+            <div
+                className='header frcc'
+            style={{ backgroundColor: `${header[1]}50` }}
+            >
+                {header[0].toUpperCase()}
+                {showTasks.length > 0 && ` [ ${showTasks.length} ]`}
             </div>
 
 
@@ -76,6 +95,7 @@ const TaskColumn = ({ header, tasks, state, handleCreate, handleDelete, handleUp
                     <React.Fragment key={task.id}>
                         {/* {i!==0 && } */}
                         <TaskCard
+                            headerColor={header[1]}
                             key={task.id}
                             task={task}
                             handleDelete={handleDelete}

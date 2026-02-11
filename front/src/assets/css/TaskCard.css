@@ -18,15 +18,22 @@
     left: 0px;
     right: 0px;
     box-sizing: border-box;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .card-header {
     top: 0px;
     height: var(--header-size);
-    background-color: rgb(111, 0, 255);
+    /* background-color: rgb(111, 0, 255); */
     color: whitesmoke;
+    text-shadow: 
+    1px 1px 1px #000000,
+     -1px 1px 1px #000000,
+    1px -1px 1px #000000,
+     -1px -1px 1px #000000
+     
+     ;
     /* padding: 0 10px; */
 }
 

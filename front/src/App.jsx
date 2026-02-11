@@ -3,11 +3,17 @@ import './assets/css/App.css'
 import { prettify } from './helpers/debug.js';
 import TaskColumn from './components/TaskColumn.jsx'
 import { API_URL } from './helpers/utils.js';
+import dragCursor from './assets/dragcursor.svg';
 
 
 
+const COLUMNS = [
 
-const COLUMNS = ['To do', 'In progress', 'In review', 'Done']
+  ['To do', '#cc0000'],
+  ['In progress', '#fbff00'],
+  ['In review', '#ffbb00'],
+  ['Done', '#77cc00']
+]
 const DEADLINE = 3 * 24 * 60 * 60 * 1000;
 
 function App() {
@@ -143,18 +149,50 @@ function App() {
       t.id === updatedTask.id ? updatedTask : t
     ));
   };
+
+
+  const handleTaskMove = async (taskId, newState, newOrder) => {
+    try {
+      const resp = await fetch(`${API_URL}tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          state: newState,
+          order: newOrder
+        })
+      });
+
+      if (resp.ok) {
+        const updatedTask = await resp.json();
+        handleUpdate(updatedTask); // Обновляем локальный стейт
+      }
+    } catch (e) {
+      console.error("Ошибка при перемещении:", e);
+    }
+  };
+
   return (
 
     <>
+
+      <img
+        src={dragCursor}
+        id="drag-ghost-svg"
+        alt=""
+      />
+
+
       {COLUMNS.map((c, i) =>
         <TaskColumn
           key={i}
           header={c}
+
           tasks={tasks}
           state={i}
           handleCreate={handleCreate}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
+          handleTaskMove={handleTaskMove}
         />
       )}
 
