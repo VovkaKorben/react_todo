@@ -5,8 +5,8 @@ import '../assets/css/flex.css'
 
 const TaskColumn = ({ header, tasks, state, handleCreate, handleDelete, handleUpdate, handleTaskMove }) => {
 
-    const showTasks = [...tasks].filter(t => t.state === state);
-
+    // const showTasks = [...tasks].filter(t => t.state === state);
+const showTasks = tasks.filter(t => t.state === state).sort((a, b) => (a.order || 0) - (b.order || 0));
     const handleDragOver = (e) => {
         // console.log(e);
         e.preventDefault();

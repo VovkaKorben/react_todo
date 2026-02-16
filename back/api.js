@@ -81,7 +81,8 @@ app.get('/api/health', asyncHandler(async (req, res) => {
 // TASK List
 app.get('/api/tasks', async (req, res) => {
     try {
-        const tasks = await TaskModel.find();
+        // const tasks = await TaskModel.find();
+        const tasks = await TaskModel.find().sort({ 'values.order': 1 });
 
         const formattedTasks = tasks.map(formatTask);
         res.json(formattedTasks);
